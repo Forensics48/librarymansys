@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+
+    </style>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+    {% load static %}
+    {% static "" as baseUrl %}
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Lend Book</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3 mb-4">
+                            <h5 class="text-center">Book ISBN</h5>
+                            <div class="col">
+                                <input type="hidden" class="form-control" id="bookIsbn" name="bookIsbn">
+                                <input type="text" class="form-control" disabled id="bookIsbnEl">
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <h5 class="text-center">Customer</h5>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="First name"
+                                    aria-label="First name" name="custFirstName" required>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" name="custLastName" required>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <h5 class="text-center">Librarian</h5>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="First name"
+                                    aria-label="First name" name="librarianFirstName"  required>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" name="librarianLastName" required>
+                            </div>
+                        </div>
+                        <!-- 
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Customer First Name</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Customer Last Name</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        </div>
+                        -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" name="lendBook_frm">Lend</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Library Management System</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="customer/1">Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="librarian/">Librarian</a>
+                    </li>
+                    <!--
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dropdown
+                    </a>     
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                    
+                  </li>
+                  -->
+                </ul>
+                <form action="" method="POST" class="d-flex">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchQuery">
+                    <button class="btn btn-light" type="submit" name="searchBook_frm">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <h1 class="mt-4 text-center">Books</h1>
+    <div class="container mt-4 mb-4">
+        <div class="row row-cols-1 row-cols-md-6 g-4">
+            {% for b in all_books%}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{baseUrl}}{{b.bookPicture}}" class="card-img-top mx-auto" alt="Image can't be found"
+                        style="max-width: 200px">
+                    <div class="card-body text-center flex-column h-100">
+                        <h5 class="card-title" style="height: 90px; font-size: 18px;">{{b.title}}</h5>
+                        <h6 class="card-subtitle mb-3 text-muted">Available Copies : {{b.available}}</h6>
+                        <h6 class="card-subtitle mb-3 text-muted">Language : {{b.language}}</h6>
+                        <button type="submit" class="btn btn-dark" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop" isbn="{{b.isbn}}" onclick='ShowModal(event)'>Lend</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+    <script>
+        function ShowModal(e) {
+            event.preventDefault();
+            var isbn = e.target.getAttribute("isbn");
+            $("#bookIsbn").val(isbn);
+            $("#bookIsbnEl").val(isbn);
+            /*
+            $.ajax({
+                url: '',
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: window.CSRF_TOKEN,
+                    isbn: isbn
+                },
+                success: function(response) {
+                }
+            })
+            */
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
