@@ -14,5 +14,5 @@ urlpatterns = [
 
     path('librarian/addBook', views.librarian, name="addBook"),
 
-    path('customer/<customer_id>', views.customer, name="customer")
+    path('customer/<customerId>', views.customer, name="customer")
 ]
