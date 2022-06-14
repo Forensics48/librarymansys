@@ -1,5 +1,3 @@
-![Design preview for the Fylo dark theme landing page challenge](./design/desktop-preview.png)
-
 # Library Management System
 A library management system created with Django, Bootstrap, Sqlite as a database storage. 
 
@@ -13,3 +11,5 @@ A library management system created with Django, Bootstrap, Sqlite as a database
 
 ## **Installation**:
 To run the project cd into the librarymansys working directory and enter the following command : python manage.py runserver
+
+![Design preview for the Fylo dark theme landing page challenge](./design/desktop-preview.png)
